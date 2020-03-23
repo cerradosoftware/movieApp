@@ -1,53 +1,39 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, Dimensions} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
-import Banner from '../components/Banner';
+import {StyleSheet, ScrollView} from 'react-native';
+import PosterList from '../components/PosterList';
+import BannerList from '../components/BannerList';
 import MoviesService from '../services/MoviesService';
 import {Movie} from '../types/Movie';
 
-const _renderItem = (arrayItem: any) => {
-  const {item, index} = arrayItem;
-  return (
-    <Banner
-      key={index}
-      url={`https://image.tmdb.org/t/p/w500/${item.backdrop_path}`}
-      title={item.title}
-    />
-  );
-};
-
 const HomeScreen = () => {
   const [trending, setTrending] = useState(new Array<Movie>(0));
+  const [now, setNow] = useState(new Array<Movie>(0));
+  const [popular, setPopular] = useState(new Array<Movie>(0));
 
   MoviesService.getTrending(result => setTrending(result));
+  MoviesService.getNow(result => setNow(result));
+  MoviesService.getPopular(result => setPopular(result));
 
   return (
-    <View style={styles.root}>
-      <View style={styles.row}>
-        <Text style={styles.rowTitle}>Tendencias</Text>
-      </View>
-      <Carousel
-        autoplay
-        data={trending}
-        renderItem={_renderItem}
-        sliderWidth={Dimensions.get('window').width}
-        itemWidth={320}
-        activeSlideAlignment="start"
-      />
-    </View>
+    <ScrollView style={styles.root}>
+      <BannerList list={trending} title="Tendencias" />
+      <PosterList list={now} title="Agora" />
+      <PosterList list={popular} title="Popular" />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   root: {
     marginStart: 20,
-    marginVertical: 40,
+    marginTop: 40,
   },
   row: {
     flexDirection: 'row',
+    marginTop: 20,
   },
   rowTitle: {
-    fontSize: 24,
+    fontSize: 20,
     textTransform: 'uppercase',
   },
 });
