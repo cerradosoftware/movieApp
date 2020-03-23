@@ -1,32 +1,41 @@
 import React from 'react';
-import {StyleSheet, Image, View, Text} from 'react-native';
+import { StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 
 interface BannerProps {
-  url: string;
-  title?: string;
-  poster?: boolean;
+    url: string;
+    title?: string;
+    poster?: boolean;
+    onPress?: () => void;
+    propsStyles?: any;
 }
 
 const Banner = (props: BannerProps) => {
-  const {url, title, poster} = props;
+    const { url, title, poster, onPress, propsStyles } = props;
 
-  const width = poster ? 140 : 320;
-  const height = poster ? 210 : 160;
+    const width = poster ? 140 : 320;
+    const height = poster ? 210 : 160;
 
-  const styles = StyleSheet.create({
-    image: {width: width, height: height},
-    wrapper: {
-      marginEnd: 10,
-      maxWidth: width,
-    },
-  });
+    const styles = StyleSheet.create({
+        image: { width: width, height: height },
+        wrapper: {
+            marginEnd: 10,
+            maxWidth: width
+        }
+    });
 
-  return (
-    <View style={styles.wrapper}>
-      <Image borderRadius={5} style={styles.image} source={{uri: url}} />
-      <Text>{title}</Text>
-    </View>
-  );
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            style={{ ...styles.wrapper, ...propsStyles }}
+        >
+            <Image
+                borderRadius={5}
+                style={styles.image}
+                source={{ uri: url }}
+            />
+            {!poster && <Text>{title}</Text>}
+        </TouchableOpacity>
+    );
 };
 
 export default Banner;
