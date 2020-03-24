@@ -12,8 +12,8 @@ interface BannerProps {
 const Banner = (props: BannerProps) => {
     const { url, title, poster, onPress, propsStyles } = props;
 
-    const width = poster ? 140 : 320;
-    const height = poster ? 210 : 160;
+    const width = poster ? 110 : 320;
+    const height = poster ? 165 : 160;
 
     const styles = StyleSheet.create({
         image: { width: width, height: height },

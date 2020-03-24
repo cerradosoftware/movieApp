@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Image,
     Dimensions,
-    ScrollView
+    ScrollView,
+    StatusBar
 } from 'react-native';
 import { Movie } from '../types/Movie';
 import { PosterList } from '../components';
@@ -41,28 +42,37 @@ export const MovieDetailScreen = (props: Props) => {
     }, [item]);
 
     return (
-        <ScrollView style={styles.root}>
-            <Image
-                style={styles.backImage}
-                source={{ uri: `${IMAGE_BASE_URL}${item.backdrop_path}` }}
+        <>
+            <StatusBar
+                backgroundColor="transparent"
+                barStyle="light-content"
+                translucent
             />
-            <Image
-                style={styles.poster}
-                source={{ uri: `${IMAGE_BASE_URL}${item.poster_path}` }}
-            />
-            <View style={styles.metadata}>
-                <Text>{moment(item.release_date).format('DD/MM/YYYY')}</Text>
-                <Text>{item.vote_average}/10</Text>
-            </View>
-            <Text style={styles.resume}>{item.overview}</Text>
-            <View style={styles.similar}>
-                <PosterList
-                    disableLoading
-                    list={similar}
-                    title="Titulos Relacionados"
+            <ScrollView style={styles.root}>
+                <Image
+                    style={styles.backImage}
+                    source={{ uri: `${IMAGE_BASE_URL}${item.backdrop_path}` }}
                 />
-            </View>
-        </ScrollView>
+                <Image
+                    style={styles.poster}
+                    source={{ uri: `${IMAGE_BASE_URL}${item.poster_path}` }}
+                />
+                <View style={styles.metadata}>
+                    <Text>
+                        {moment(item.release_date).format('DD/MM/YYYY')}
+                    </Text>
+                    <Text>{item.vote_average}/10</Text>
+                </View>
+                <Text style={styles.resume}>{item.overview}</Text>
+                <View style={styles.similar}>
+                    <PosterList
+                        disableLoading
+                        list={similar}
+                        title="Titulos Relacionados"
+                    />
+                </View>
+            </ScrollView>
+        </>
     );
 };
 

@@ -7,8 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 
 interface PosterListProps {
     list: Array<Movie>;
-    title: string;
+    title?: string;
     disableLoading?: boolean;
+    vertical?: boolean;
 }
 
 const renderItem = (arrayItem: any, onPress: () => void) => {
@@ -25,7 +26,7 @@ const renderItem = (arrayItem: any, onPress: () => void) => {
 
 const PosterList = (props: PosterListProps) => {
     const navigation = useNavigation();
-    const { list, title, disableLoading } = props;
+    const { list, title, disableLoading, vertical } = props;
 
     if (list && list.length > 0) {
         return (
@@ -41,7 +42,8 @@ const PosterList = (props: PosterListProps) => {
                         )
                     }
                     keyExtractor={(item) => item.id.toString()}
-                    horizontal
+                    horizontal={!vertical}
+                    numColumns={vertical ? 3 : 1}
                 />
             </>
         );

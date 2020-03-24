@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Text,
     StyleSheet,
     ScrollView,
     TextInput,
     View,
-    Dimensions
+    Dimensions,
+    StatusBar
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { RouteProp } from '@react-navigation/native';
 import TouchIcon from '../components/TouchIcon';
+import { PosterList } from '../components';
+import { Movie } from '../types/Movie';
+import MoviesService from '../services/MoviesService';
 
 type SearchScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -23,19 +27,45 @@ type Props = {
     route: SearchScreenRouteProp;
 };
 
-export const SearchScreen = () => {
+export const SearchScreen = (props: Props) => {
+    props.navigation.setOptions({
+        headerTitle: 'Buscar'
+    });
     const [query, setQuery] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState(new Array<Movie>(0));
+
+    const doQuery = () => {
+        setLoading(true);
+        MoviesService.search(query, (result) => {
+            setResult(result);
+            setLoading(false);
+        });
+    };
+
     return (
-        <ScrollView style={styles.root}>
-            <View style={styles.searchView}>
-                <TextInput
-                    style={styles.searchInput}
-                    onChangeText={(text) => setQuery(text)}
-                    value={query}
-                />
-                <TouchIcon styles={styles.searchIcon} name="search" />
+        <>
+            <StatusBar
+                backgroundColor="transparent"
+                barStyle="dark-content"
+                translucent
+            />
+            <View style={styles.root}>
+                <View style={styles.searchView}>
+                    <TextInput
+                        style={styles.searchInput}
+                        onChangeText={(text) => setQuery(text)}
+                        value={query}
+                    />
+                    <TouchIcon
+                        styles={styles.searchIcon}
+                        name="search"
+                        onPress={doQuery}
+                    />
+                </View>
+                <PosterList list={result} vertical disableLoading={!loading} />
             </View>
-        </ScrollView>
+        </>
     );
 };
 
@@ -45,6 +75,7 @@ const styles = StyleSheet.create({
         top: 40
     },
     searchView: {
+        marginTop: 10,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -53,10 +84,11 @@ const styles = StyleSheet.create({
         right: 0
     },
     searchInput: {
-        height: 45,
         borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
-        flex: 1
+        flex: 1,
+        backgroundColor: '#E0E0E0',
+        borderRadius: 10
     }
 });
 

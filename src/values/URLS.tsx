@@ -22,4 +22,10 @@ export const CREDITS_URL = (id: number) => {
     return `${BASE_URL}/movie/${id}/credits?api_key=${MOVIEDB_APIKEY}&language=pt-BR`;
 };
 
+export const SEARCH_URL = (query: string) => {
+    return `${BASE_URL}/search/movie?api_key=${MOVIEDB_APIKEY}&language=pt-BR&page=1&include_adult=false&query=${query}`;
+};
+
+// /search/movie?api_key={{apikey_movies}}&language=pt-BR&page=1&include_adult=false&query=star+wars
+
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500/';

@@ -4,7 +4,8 @@ import {
     POPULAR_URL,
     UPCAMING_URL,
     SIMILAR_URL,
-    CREDITS_URL
+    CREDITS_URL,
+    SEARCH_URL
 } from '../values/URLS';
 import axios from 'axios';
 import { Movie } from '../types/Movie';
@@ -37,7 +38,16 @@ class MoviesService {
     static async getCast(id: number, callback: (r: Array<Movie>) => void) {
         try {
             const response = await axios.get(CREDITS_URL(id));
-            callback(response.data.cast);
+            callback(response.data.results);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async search(query: string, callback: (r: Array<Movie>) => void) {
+        try {
+            const response = await axios.get(SEARCH_URL(query));
+            callback(response.data.results);
         } catch (error) {
             throw error;
         }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, StatusBar } from 'react-native';
 import PosterList from '../components/PosterList';
 import BannerList from '../components/BannerList';
 import MoviesService from '../services/MoviesService';
@@ -41,6 +41,11 @@ export const Home = (props: Props) => {
 
     return (
         <>
+            <StatusBar
+                backgroundColor="transparent"
+                barStyle="dark-content"
+                translucent
+            />
             <ScrollView style={styles.root}>
                 <BannerList list={trending} title="Lançamentos" />
                 <PosterList list={now} title="Agora" />
@@ -53,7 +58,7 @@ export const Home = (props: Props) => {
 const styles = StyleSheet.create({
     root: {
         marginStart: 20,
-        marginTop: 40
+        marginTop: 60
     },
     row: {
         flexDirection: 'row',
