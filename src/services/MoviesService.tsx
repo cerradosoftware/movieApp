@@ -3,9 +3,9 @@ import {
     NOW_URL,
     POPULAR_URL,
     UPCAMING_URL,
-    BASE_URL,
-    MOVIEDB_APIKEY
-} from '../values/config';
+    SIMILAR_URL,
+    CREDITS_URL
+} from '../values/URLS';
 import axios from 'axios';
 import { Movie } from '../types/Movie';
 
@@ -27,15 +27,17 @@ class MoviesService {
     }
 
     static async getRelated(id: number, callback: (r: Array<Movie>) => void) {
-        const SIMILAR_URL =
-            BASE_URL +
-            '/movie/' +
-            id +
-            '/similar?api_key=' +
-            MOVIEDB_APIKEY +
-            '&language=pt-BR';
         try {
-            MoviesService.doRequest(SIMILAR_URL, callback);
+            MoviesService.doRequest(SIMILAR_URL(id), callback);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getCast(id: number, callback: (r: Array<Movie>) => void) {
+        try {
+            const response = await axios.get(CREDITS_URL(id));
+            callback(response.data.cast);
         } catch (error) {
             throw error;
         }

@@ -2,12 +2,13 @@ import React from 'react';
 import { Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { Movie } from '../types/Movie';
 import Banner from './Banner';
-import { IMAGE_BASE_URL } from '../values/config';
+import { IMAGE_BASE_URL } from '../values/URLS';
 import { useNavigation } from '@react-navigation/native';
 
 interface PosterListProps {
     list: Array<Movie>;
     title: string;
+    disableLoading?: boolean;
 }
 
 const renderItem = (arrayItem: any, onPress: () => void) => {
@@ -24,7 +25,7 @@ const renderItem = (arrayItem: any, onPress: () => void) => {
 
 const PosterList = (props: PosterListProps) => {
     const navigation = useNavigation();
-    const { list, title } = props;
+    const { list, title, disableLoading } = props;
 
     if (list && list.length > 0) {
         return (
@@ -34,7 +35,7 @@ const PosterList = (props: PosterListProps) => {
                     data={list}
                     renderItem={(item) =>
                         renderItem(item, () =>
-                            navigation.navigate('MovieDetail', {
+                            navigation.navigate('MovieDetailScreen', {
                                 item: item.item
                             })
                         )
@@ -44,8 +45,10 @@ const PosterList = (props: PosterListProps) => {
                 />
             </>
         );
-    } else {
+    } else if (!disableLoading) {
         return <ActivityIndicator size="large" color="#F99F00" />;
+    } else {
+        return <></>;
     }
 };
 

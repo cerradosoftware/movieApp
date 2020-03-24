@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { Movie } from '../types/Movie';
 import Banner from './Banner';
-import { IMAGE_BASE_URL } from '../values/config';
+import { IMAGE_BASE_URL } from '../values/URLS';
 import Carousel from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
 
@@ -36,7 +36,7 @@ const PosterList = (props: BannerListProps) => {
                     data={list}
                     renderItem={(item) =>
                         renderItem(item, () =>
-                            navigation.navigate('MovieDetail', {
+                            navigation.navigate('MovieDetailScreen', {
                                 item: item.item
                             })
                         )

@@ -4,8 +4,26 @@ import PosterList from '../components/PosterList';
 import BannerList from '../components/BannerList';
 import MoviesService from '../services/MoviesService';
 import { Movie } from '../types/Movie';
+import { RootStackParamList } from '../navigation/NavigationTypes';
+import { StackNavigationProp } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export const HomeScreen = () => {
+type HomeScreenNavigationProp = StackNavigationProp<
+    RootStackParamList,
+    'HomeScreen'
+>;
+type Props = {
+    navigation: HomeScreenNavigationProp;
+};
+
+export const Home = (props: Props) => {
+    props.navigation.setOptions({
+        headerTitle: 'MovieApp',
+        headerRight: () => <Icon name="search" size={20} color="#999" />,
+        headerRightContainerStyle: {
+            right: 20
+        }
+    });
     const [trending, setTrending] = useState(new Array<Movie>(0));
     const [now, setNow] = useState(new Array<Movie>(0));
     const [popular, setPopular] = useState(new Array<Movie>(0));
@@ -29,8 +47,8 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
     root: {
-        marginStart: 20
-        // marginTop: 40,
+        marginStart: 20,
+        marginTop: 40
     },
     row: {
         flexDirection: 'row',
@@ -42,4 +60,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default HomeScreen;
+export default Home;

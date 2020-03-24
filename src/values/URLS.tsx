@@ -14,4 +14,12 @@ export const NOW_URL =
     '&language=pt-BR';
 export const POPULAR_URL =
     BASE_URL + '/movie/popular?api_key=' + MOVIEDB_APIKEY + '&language=pt-BR';
+export const SIMILAR_URL = (id: number) => {
+    return `${BASE_URL}/movie/${id}/similar?api_key=${MOVIEDB_APIKEY}&language=pt-BR`;
+};
+
+export const CREDITS_URL = (id: number) => {
+    return `${BASE_URL}/movie/${id}/credits?api_key=${MOVIEDB_APIKEY}&language=pt-BR`;
+};
+
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500/';

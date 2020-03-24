@@ -1,27 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    Dimensions,
+    ScrollView
+} from 'react-native';
 import { Movie } from '../types/Movie';
-import { Banner, PosterList } from '../components';
-import { StackRouterOptions } from '@react-navigation/native';
-import { IMAGE_BASE_URL } from '../values/config';
+import { PosterList } from '../components';
+import { IMAGE_BASE_URL } from '../values/URLS';
 import MoviesService from '../services/MoviesService';
+import moment from 'moment';
+import { StackNavigationProp, HeaderTitle } from '@react-navigation/stack';
+import { RootStackParamList } from '../navigation/NavigationTypes';
+import { RouteProp } from '@react-navigation/native';
 
-interface MovieDetailScreenProps {
-    item: Movie;
-    route: StackRouterOptions;
-}
+type MovieDetailScreenNavigationProp = StackNavigationProp<
+    RootStackParamList,
+    'MovieDetailScreen'
+>;
+type MovieDetailScreenRouteProp = RouteProp<
+    RootStackParamList,
+    'MovieDetailScreen'
+>;
 
-export const MovieDetailScreen = (props: MovieDetailScreenProps) => {
+type Props = {
+    navigation: MovieDetailScreenNavigationProp;
+    route: MovieDetailScreenRouteProp;
+};
+
+export const MovieDetailScreen = (props: Props) => {
     const { item } = props.route.params;
-    props.navigation.setOptions({ title: item.title });
+    props.navigation.setOptions({ headerTitle: item.title });
+
     const [similar, setSimilar] = useState(new Array<Movie>(0));
 
     useEffect(() => {
         MoviesService.getRelated(item.id, (result) => setSimilar(result));
-    }, []);
+    }, [item]);
 
     return (
-        <View style={styles.root}>
+        <ScrollView style={styles.root}>
             <Image
                 style={styles.backImage}
                 source={{ uri: `${IMAGE_BASE_URL}${item.backdrop_path}` }}
@@ -31,17 +51,25 @@ export const MovieDetailScreen = (props: MovieDetailScreenProps) => {
                 source={{ uri: `${IMAGE_BASE_URL}${item.poster_path}` }}
             />
             <View style={styles.metadata}>
-                <Text>{item.release_date}</Text>
+                <Text>{moment(item.release_date).format('DD/MM/YYYY')}</Text>
                 <Text>{item.vote_average}/10</Text>
             </View>
             <Text style={styles.resume}>{item.overview}</Text>
-            <PosterList list={similar} title="Titulos Relacionados" />
-        </View>
+            <View style={styles.similar}>
+                <PosterList
+                    disableLoading
+                    list={similar}
+                    title="Titulos Relacionados"
+                />
+            </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    root: {},
+    root: {
+        bottom: 20
+    },
     backImage: {
         width: Dimensions.get('window').width,
         height: 200
@@ -55,9 +83,15 @@ const styles = StyleSheet.create({
     },
     metadata: {
         alignSelf: 'flex-end',
+        alignItems: 'flex-end',
         right: 20
     },
     resume: {
+        margin: 20,
+        textAlign: 'justify',
+        fontFamily: 'sans-serif-light'
+    },
+    similar: {
         margin: 20
     }
 });
