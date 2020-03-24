@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { HomeScreen, MovieDetailScreen } from '../screens/';
 import { RootStackParamList } from './NavigationTypes';
+import SearchScreen from '../screens/SearchScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -26,6 +27,7 @@ const RootNavigator = () => {
                     name="MovieDetailScreen"
                     component={MovieDetailScreen}
                 />
+                <Stack.Screen name="SearchScreen" component={SearchScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

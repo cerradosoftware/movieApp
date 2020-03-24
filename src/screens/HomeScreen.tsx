@@ -6,7 +6,7 @@ import MoviesService from '../services/MoviesService';
 import { Movie } from '../types/Movie';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
-import TouchIcon from '../components/TochIcon';
+import TouchIcon from '../components/TouchIcon';
 
 type HomeScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -19,7 +19,12 @@ type Props = {
 export const Home = (props: Props) => {
     props.navigation.setOptions({
         headerTitle: 'MovieApp',
-        headerRight: () => <TouchIcon name="search" />,
+        headerRight: () => (
+            <TouchIcon
+                name={'search'}
+                onPress={() => props.navigation.navigate('SearchScreen')}
+            />
+        ),
         headerRightContainerStyle: {
             right: 20
         }
@@ -37,7 +42,7 @@ export const Home = (props: Props) => {
     return (
         <>
             <ScrollView style={styles.root}>
-                <BannerList list={trending} title="Tendencias" />
+                <BannerList list={trending} title="Lançamentos" />
                 <PosterList list={now} title="Agora" />
                 <PosterList list={popular} title="Popular" />
             </ScrollView>

@@ -33,6 +33,7 @@ const PosterList = (props: BannerListProps) => {
                 <Text style={styles.rowTitle}>{title}</Text>
                 <Carousel
                     autoplay
+                    loop
                     data={list}
                     renderItem={(item) =>
                         renderItem(item, () =>

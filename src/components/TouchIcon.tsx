@@ -12,9 +12,9 @@ type Props = {
 };
 
 const TouchIcon = (props: Props) => {
-    const { name, size, color, onPress } = props;
+    const { name, size, color, onPress, styles } = props;
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} style={{ padding: 20, ...styles }}>
             <Icon name={name} size={size || 20} color={color || '#999'} />
         </TouchableOpacity>
     );
