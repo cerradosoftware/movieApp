@@ -6,7 +6,7 @@ import MoviesService from '../services/MoviesService';
 import { Movie } from '../types/Movie';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import TouchIcon from '../components/TochIcon';
 
 type HomeScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -19,7 +19,7 @@ type Props = {
 export const Home = (props: Props) => {
     props.navigation.setOptions({
         headerTitle: 'MovieApp',
-        headerRight: () => <Icon name="search" size={20} color="#999" />,
+        headerRight: () => <TouchIcon name="search" />,
         headerRightContainerStyle: {
             right: 20
         }
