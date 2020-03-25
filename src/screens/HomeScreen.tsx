@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, ScrollView, StatusBar, Image } from 'react-native';
 import PosterList from '../components/PosterList';
 import BannerList from '../components/BannerList';
 import MoviesService from '../services/MoviesService';
@@ -7,7 +7,6 @@ import { Movie } from '../types/Movie';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import TouchIcon from '../components/TouchIcon';
-import GenresList from '../components/GenresList';
 
 type HomeScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -19,13 +18,19 @@ type Props = {
 
 export const Home = (props: Props) => {
     props.navigation.setOptions({
-        headerTitle: 'MovieApp',
+        headerTitle: '',
         headerRight: () => (
             <TouchIcon
                 name={'search'}
                 onPress={() => props.navigation.navigate('SearchScreen')}
             />
         ),
+        headerTransparent: true,
+
+        headerLeft: () => <Image source={require('../assets/icon.png')} />,
+        headerLeftContainerStyle: {
+            left: 20
+        },
         headerRightContainerStyle: {
             right: 20
         }
