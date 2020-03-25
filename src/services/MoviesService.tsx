@@ -8,7 +8,8 @@ import {
     SEARCH_URL,
     GENDERS_URL,
     DISCOVER_GENRE_URL,
-    VIDEOS_URL
+    VIDEOS_URL,
+    IMAGES_URL
 } from '../values/URLS';
 import axios from 'axios';
 import { Movie } from '../types/Movie';
@@ -53,6 +54,15 @@ class MoviesService {
         try {
             const response = await axios.get(VIDEOS_URL(id));
             callback(response.data.results);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getImages(id: number, callback: (r: Array<Image>) => void) {
+        try {
+            const response = await axios.get(IMAGES_URL(id));
+            callback(response.data.backdrops.slice(0, 10));
         } catch (error) {
             throw error;
         }

@@ -8,6 +8,7 @@ import {
     ScrollView
 } from 'react-native';
 import YouTube from 'react-native-youtube';
+import ImageView from 'react-native-image-viewing';
 import { Movie } from '../types/Movie';
 import { PosterList, Banner } from '../components';
 import { IMAGE_BASE_URL, VIDEOS_URL } from '../values/URLS';
@@ -17,6 +18,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { RouteProp } from '@react-navigation/native';
 import { Video } from '../types/Video';
+import { ImageType } from '../types/ImageType';
 import { YOUTUBE_KEY } from '../values/config';
 
 type MovieDetailScreenNavigationProp = StackNavigationProp<
@@ -38,11 +40,18 @@ export const MovieDetailScreen = (props: Props) => {
     props.navigation.setOptions({ headerTitle: item.title });
     const [similar, setSimilar] = useState(new Array<Movie>(0));
     const [videos, setVideos] = useState(new Array<Video>(0));
+    const [images, setImages] = useState(new Array<ImageType>(0));
+    const [showImages, setShowImages] = useState(false);
 
     useEffect(() => {
         MoviesService.getRelated(item.id, (result) => setSimilar(result));
         MoviesService.getVideos(item.id, (result) => setVideos(result));
+        MoviesService.getImages(item.id, (result) => setImages(result));
     }, [item]);
+
+    const onBannerPress = () => {
+        if (images.length > 0) setShowImages(true);
+    };
 
     return (
         <>
@@ -55,43 +64,55 @@ export const MovieDetailScreen = (props: Props) => {
                     propsStyles={styles.poster}
                     poster
                     url={`${IMAGE_BASE_URL}${item.poster_path}`}
+                    onPress={() => onBannerPress()}
                 />
-                <View style={styles.metadata}>
-                    <Text>
-                        {moment(item.release_date).format('DD/MM/YYYY')}
-                    </Text>
-                    <Text>{item.vote_average}/10</Text>
-                </View>
-                <Text style={styles.original}>
-                    Titulo Original:{item.original_title}
-                </Text>
-                <Text style={styles.resume}>{item.overview}</Text>
-                <PosterList
-                    disableLoading
-                    list={similar}
-                    title="Titulos Relacionados"
-                />
-                {videos.length > 0 && (
-                    <View>
-                        <Text style={styles.label}>Trailer</Text>
-                        <YouTube
-                            videoId={videos[0].key}
-                            apiKey={YOUTUBE_KEY}
-                            onError={(e) => console.log(e)}
-                            style={styles.video}
-                        />
+                <View style={styles.constent}>
+                    <View style={styles.metadata}>
+                        <Text>
+                            {moment(item.release_date).format('DD/MM/YYYY')}
+                        </Text>
+                        <Text>{item.vote_average}/10</Text>
                     </View>
-                )}
+                    <Text style={styles.original}>
+                        Titulo Original:{item.original_title}
+                    </Text>
+                    <Text style={styles.resume}>{item.overview}</Text>
+                    <PosterList
+                        disableLoading
+                        list={similar}
+                        title="Titulos Relacionados"
+                    />
+
+                    {videos.length > 0 && (
+                        <View>
+                            <Text style={styles.label}>Trailer</Text>
+                            <YouTube
+                                videoId={videos[0].key}
+                                apiKey={YOUTUBE_KEY}
+                                onError={(e) => console.log(e)}
+                                style={styles.video}
+                            />
+                        </View>
+                    )}
+                </View>
             </ScrollView>
+            <ImageView
+                images={images.map((img) => {
+                    return {
+                        uri: `${IMAGE_BASE_URL}${img.file_path}`
+                    };
+                })}
+                imageIndex={0}
+                visible={showImages}
+                onRequestClose={() => setShowImages(false)}
+            />
         </>
     );
 };
 
 const styles = StyleSheet.create({
     root: {
-        bottom: 20,
-        marginHorizontal: 20
-        // top: 20
+        bottom: 20
     },
     backImage: {
         width: Dimensions.get('window').width,
@@ -103,6 +124,9 @@ const styles = StyleSheet.create({
         left: 20,
         width: 100,
         height: 150
+    },
+    constent: {
+        marginHorizontal: 15
     },
     metadata: {
         alignSelf: 'flex-end',

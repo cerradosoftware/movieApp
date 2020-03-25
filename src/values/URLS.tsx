@@ -15,7 +15,7 @@ export const VIDEOS_URL = (id: number) => {
 };
 
 export const IMAGES_URL = (id: number) => {
-    return `${BASE_URL}/movie/${id}/images?api_key=${MOVIEDB_APIKEY}&language=${LANG}$site=YouTube`;
+    return `${BASE_URL}/movie/${id}/images?api_key=${MOVIEDB_APIKEY}`;
 };
 
 export const CREDITS_URL = (id: number) => {
