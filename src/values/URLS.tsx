@@ -14,6 +14,10 @@ export const VIDEOS_URL = (id: number) => {
     return `${BASE_URL}/movie/${id}/videos?api_key=${MOVIEDB_APIKEY}&language=${LANG}$site=YouTube`;
 };
 
+export const IMAGES_URL = (id: number) => {
+    return `${BASE_URL}/movie/${id}/images?api_key=${MOVIEDB_APIKEY}&language=${LANG}$site=YouTube`;
+};
+
 export const CREDITS_URL = (id: number) => {
     return `${BASE_URL}/movie/${id}/credits?api_key=${MOVIEDB_APIKEY}&language=${LANG}`;
 };
