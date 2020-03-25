@@ -7,11 +7,13 @@ import {
     CREDITS_URL,
     SEARCH_URL,
     GENDERS_URL,
-    DISCOVER_GENRE_URL
+    DISCOVER_GENRE_URL,
+    VIDEOS_URL
 } from '../values/URLS';
 import axios from 'axios';
 import { Movie } from '../types/Movie';
 import { Genre } from '../types/Genre';
+import { Video } from '../types/Video';
 
 class MoviesService {
     static async getUpcaming(callback: (r: Array<Movie>) => void) {
@@ -41,6 +43,15 @@ class MoviesService {
     static async getCast(id: number, callback: (r: Array<Movie>) => void) {
         try {
             const response = await axios.get(CREDITS_URL(id));
+            callback(response.data.results);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getVideos(id: number, callback: (r: Array<Video>) => void) {
+        try {
+            const response = await axios.get(VIDEOS_URL(id));
             callback(response.data.results);
         } catch (error) {
             throw error;
