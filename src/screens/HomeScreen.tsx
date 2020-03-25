@@ -40,9 +40,9 @@ export const Home = (props: Props) => {
     const [popular, setPopular] = useState(new Array<Movie>(0));
 
     useEffect(() => {
-        MoviesService.getTrending((result) => setTrending(result));
-        MoviesService.getNow((result) => setNow(result));
-        MoviesService.getPopular((result) => setPopular(result));
+        MoviesService.getTrending().then((result) => setTrending(result));
+        MoviesService.getNow().then((result) => setNow(result));
+        MoviesService.getPopular().then((result) => setPopular(result));
     }, []);
 
     return (

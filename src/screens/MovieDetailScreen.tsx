@@ -44,9 +44,9 @@ export const MovieDetailScreen = (props: Props) => {
     const [showImages, setShowImages] = useState(false);
 
     useEffect(() => {
-        MoviesService.getRelated(item.id, (result) => setSimilar(result));
-        MoviesService.getVideos(item.id, (result) => setVideos(result));
-        MoviesService.getImages(item.id, (result) => setImages(result));
+        MoviesService.getRelated(item.id).then((result) => setSimilar(result));
+        MoviesService.getVideos(item.id).then((result) => setVideos(result));
+        MoviesService.getImages(item.id).then((result) => setImages(result));
     }, [item]);
 
     const onBannerPress = () => {

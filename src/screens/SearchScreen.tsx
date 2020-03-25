@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-    StyleSheet,
-    TextInput,
-    View,
-    Alert,
-    Text,
-    Picker,
-    PickerItem
-} from 'react-native';
+import { StyleSheet, TextInput, View, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
+import { Picker } from '@react-native-community/picker';
 import { RouteProp } from '@react-navigation/native';
 import TouchIcon from '../components/TouchIcon';
 import { PosterList } from '../components';
 import { Movie } from '../types/Movie';
 import MoviesService from '../services/MoviesService';
 import { Genre } from '../types/Genre';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type SearchScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -42,12 +34,12 @@ export const SearchScreen = (props: Props) => {
     const [genreId, setGenreId] = useState(0);
 
     useEffect(() => {
-        MoviesService.getGenders((result) => setGenres(result));
+        MoviesService.getGenders().then((result) => setGenres(result));
     }, []);
 
     useEffect(() => {
         if (genreId != INVALID) {
-            MoviesService.getMoviesByGenre(genreId, (result) =>
+            MoviesService.getMoviesByGenre(genreId).then((result) =>
                 setResult(result)
             );
         }
@@ -60,7 +52,7 @@ export const SearchScreen = (props: Props) => {
         }
         setLoading(true);
         setGenreId(INVALID);
-        MoviesService.search(query, (result) => {
+        MoviesService.search(query).then((result) => {
             setResult(result);
             setLoading(false);
         });
