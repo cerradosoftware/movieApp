@@ -5,11 +5,10 @@ import {
     StyleSheet,
     Image,
     Dimensions,
-    ScrollView,
-    StatusBar
+    ScrollView
 } from 'react-native';
 import { Movie } from '../types/Movie';
-import { PosterList } from '../components';
+import { PosterList, Banner } from '../components';
 import { IMAGE_BASE_URL } from '../values/URLS';
 import MoviesService from '../services/MoviesService';
 import moment from 'moment';
@@ -43,20 +42,17 @@ export const MovieDetailScreen = (props: Props) => {
 
     return (
         <>
-            <StatusBar
-                backgroundColor="transparent"
-                barStyle="light-content"
-                translucent
-            />
             <ScrollView style={styles.root}>
                 <Image
                     style={styles.backImage}
                     source={{ uri: `${IMAGE_BASE_URL}${item.backdrop_path}` }}
                 />
-                <Image
-                    style={styles.poster}
-                    source={{ uri: `${IMAGE_BASE_URL}${item.poster_path}` }}
+                <Banner
+                    propsStyles={styles.poster}
+                    poster
+                    url={`${IMAGE_BASE_URL}${item.poster_path}`}
                 />
+
                 <View style={styles.metadata}>
                     <Text>
                         {moment(item.release_date).format('DD/MM/YYYY')}
@@ -79,14 +75,15 @@ export const MovieDetailScreen = (props: Props) => {
 const styles = StyleSheet.create({
     root: {
         bottom: 20
+        // top: 20
     },
     backImage: {
         width: Dimensions.get('window').width,
-        height: 200
+        height: 250
     },
     poster: {
         position: 'absolute',
-        top: 100,
+        top: 150,
         left: 30,
         width: 100,
         height: 150
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
         right: 20
     },
     resume: {
-        margin: 20,
+        margin: 30,
         textAlign: 'justify',
         fontFamily: 'sans-serif-light'
     },

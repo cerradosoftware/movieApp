@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Text,
-    StyleSheet,
-    ScrollView,
-    TextInput,
-    View,
-    Dimensions,
-    StatusBar
-} from 'react-native';
+import { StyleSheet, TextInput, View, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { RouteProp } from '@react-navigation/native';
@@ -29,13 +21,18 @@ type Props = {
 
 export const SearchScreen = (props: Props) => {
     props.navigation.setOptions({
-        headerTitle: 'Buscar'
+        headerTitle: '',
+        headerTintColor: 'gray'
     });
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(new Array<Movie>(0));
 
     const doQuery = () => {
+        if (query.length < 3) {
+            Alert.alert('Busca', 'Insira ao menos 3 caracteres para a busca.');
+            return;
+        }
         setLoading(true);
         MoviesService.search(query, (result) => {
             setResult(result);
@@ -44,28 +41,21 @@ export const SearchScreen = (props: Props) => {
     };
 
     return (
-        <>
-            <StatusBar
-                backgroundColor="transparent"
-                barStyle="dark-content"
-                translucent
-            />
-            <View style={styles.root}>
-                <View style={styles.searchView}>
-                    <TextInput
-                        style={styles.searchInput}
-                        onChangeText={(text) => setQuery(text)}
-                        value={query}
-                    />
-                    <TouchIcon
-                        styles={styles.searchIcon}
-                        name="search"
-                        onPress={doQuery}
-                    />
-                </View>
-                <PosterList list={result} vertical disableLoading={!loading} />
+        <View style={styles.root}>
+            <View style={styles.searchView}>
+                <TextInput
+                    style={styles.searchInput}
+                    onChangeText={(text) => setQuery(text)}
+                    value={query}
+                />
+                <TouchIcon
+                    styles={styles.searchIcon}
+                    name="search"
+                    onPress={doQuery}
+                />
             </View>
-        </>
+            <PosterList list={result} vertical disableLoading={!loading} />
+        </View>
     );
 };
 
@@ -75,20 +65,27 @@ const styles = StyleSheet.create({
         top: 40
     },
     searchView: {
-        marginTop: 10,
+        marginTop: 20,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#E0E0E0',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5
     },
     searchIcon: {
         position: 'absolute',
         right: 0
     },
     searchInput: {
-        borderBottomWidth: 0.5,
-        borderBottomColor: 'gray',
-        flex: 1,
-        backgroundColor: '#E0E0E0',
-        borderRadius: 10
+        flex: 1
     }
 });
 

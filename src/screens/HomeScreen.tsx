@@ -7,6 +7,7 @@ import { Movie } from '../types/Movie';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import TouchIcon from '../components/TouchIcon';
+import GenresList from '../components/GenresList';
 
 type HomeScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -40,18 +41,11 @@ export const Home = (props: Props) => {
     }, []);
 
     return (
-        <>
-            <StatusBar
-                backgroundColor="transparent"
-                barStyle="dark-content"
-                translucent
-            />
-            <ScrollView style={styles.root}>
-                <BannerList list={trending} title="Lançamentos" />
-                <PosterList list={now} title="Agora" />
-                <PosterList list={popular} title="Popular" />
-            </ScrollView>
-        </>
+        <ScrollView style={styles.root}>
+            <BannerList list={trending} title="Lançamentos" />
+            <PosterList list={now} title="Agora" />
+            <PosterList list={popular} title="Popular" />
+        </ScrollView>
     );
 };
 

@@ -18,7 +18,7 @@ const Banner = (props: BannerProps) => {
     const styles = StyleSheet.create({
         image: { width: width, height: height },
         wrapper: {
-            marginEnd: 10,
+            margin: 5,
             maxWidth: width
         }
     });
