@@ -51,7 +51,7 @@ export const SearchScreen = (props: Props) => {
                 setResult(result)
             );
         }
-    });
+    }, [genreId]);
 
     const doQuery = () => {
         if (query.length < 3) {
