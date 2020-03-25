@@ -29,6 +29,7 @@ type Props = {
     route: SearchScreenRouteProp;
 };
 
+const INVALID: number = -1;
 export const SearchScreen = (props: Props) => {
     props.navigation.setOptions({
         headerTitle: '',
@@ -45,7 +46,7 @@ export const SearchScreen = (props: Props) => {
     }, []);
 
     useEffect(() => {
-        if (genreId != -1) {
+        if (genreId != INVALID) {
             MoviesService.getMoviesByGenre(genreId, (result) =>
                 setResult(result)
             );
@@ -58,6 +59,7 @@ export const SearchScreen = (props: Props) => {
             return;
         }
         setLoading(true);
+        setGenreId(INVALID);
         MoviesService.search(query, (result) => {
             setResult(result);
             setLoading(false);
@@ -83,7 +85,7 @@ export const SearchScreen = (props: Props) => {
                 style={styles.genres}
                 onValueChange={(itemValue, itemIndex) => setGenreId(itemValue)}
             >
-                <Picker.Item label="Gênero" value={-1} />
+                <Picker.Item label="Gênero" value={INVALID} />
 
                 {genres.map((item) => {
                     return (
