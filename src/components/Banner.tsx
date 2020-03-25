@@ -7,19 +7,23 @@ interface BannerProps {
     poster?: boolean;
     onPress?: () => void;
     propsStyles?: any;
+    width?: number;
 }
 
 const Banner = (props: BannerProps) => {
-    const { url, title, poster, onPress, propsStyles } = props;
+    const { url, title, poster, onPress, propsStyles, width } = props;
 
-    const width = poster ? 110 : 320;
-    const height = poster ? 165 : 160;
+    let widthCalc = width;
+    if (!width || width === 0) widthCalc = poster ? 110 : 320;
+
+    // const widthCalc = width > 0 ? width : poster ? 110 : 320;
+    const ratio = poster ? 10 / 16 : 16 / 10;
 
     const styles = StyleSheet.create({
-        image: { width: width, height: height },
+        image: { width: widthCalc, aspectRatio: ratio },
         wrapper: {
             margin: 5,
-            maxWidth: width
+            maxWidth: widthCalc
         }
     });
 
