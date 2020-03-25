@@ -71,7 +71,8 @@ class MoviesService {
     ) {
         try {
             const response = await axios.get(DISCOVER_GENRE_URL(id));
-            callback(response.data.results);
+            const data = MoviesService.cleanResult(response.data.results);
+            callback(data);
         } catch (error) {
             throw error;
         }
@@ -104,10 +105,14 @@ class MoviesService {
         callback: (r: Array<Movie>) => void
     ) {
         const response = await axios.get(url);
-        let data = response.data.results.filter((item: Movie) => {
+        let data = MoviesService.cleanResult(response.data.results);
+        callback(data.slice(0, 10));
+    }
+
+    private static cleanResult(results: Array<Movie>) {
+        return results.filter((item: Movie) => {
             return item.overview && item.backdrop_path && item.poster_path;
         });
-        callback(data.slice(0, 10));
     }
 }
 

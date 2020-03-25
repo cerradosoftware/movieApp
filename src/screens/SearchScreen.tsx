@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TextInput, View, Alert } from 'react-native';
+import {
+    StyleSheet,
+    TextInput,
+    View,
+    Alert,
+    Text,
+    Picker,
+    PickerItem
+} from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { RouteProp } from '@react-navigation/native';
@@ -7,6 +15,8 @@ import TouchIcon from '../components/TouchIcon';
 import { PosterList } from '../components';
 import { Movie } from '../types/Movie';
 import MoviesService from '../services/MoviesService';
+import { Genre } from '../types/Genre';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type SearchScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
@@ -27,6 +37,20 @@ export const SearchScreen = (props: Props) => {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(new Array<Movie>(0));
+    const [genres, setGenres] = useState(new Array<Genre>(0));
+    const [genreId, setGenreId] = useState(0);
+
+    useEffect(() => {
+        MoviesService.getGenders((result) => setGenres(result));
+    }, []);
+
+    useEffect(() => {
+        if (genreId != -1) {
+            MoviesService.getMoviesByGenre(genreId, (result) =>
+                setResult(result)
+            );
+        }
+    });
 
     const doQuery = () => {
         if (query.length < 3) {
@@ -54,6 +78,23 @@ export const SearchScreen = (props: Props) => {
                     onPress={doQuery}
                 />
             </View>
+            <Picker
+                selectedValue={genreId}
+                style={styles.genres}
+                onValueChange={(itemValue, itemIndex) => setGenreId(itemValue)}
+            >
+                <Picker.Item label="Gênero" value={-1} />
+
+                {genres.map((item) => {
+                    return (
+                        <Picker.Item
+                            key={item.id}
+                            label={item.name}
+                            value={item.id}
+                        />
+                    );
+                })}
+            </Picker>
             <PosterList list={result} vertical disableLoading={!loading} />
         </View>
     );
@@ -86,6 +127,18 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         flex: 1
+    },
+    genres: {
+        marginTop: 20,
+        width: 180,
+        alignSelf: 'flex-end',
+        right: 0
+    },
+    genresItem: {
+        marginVertical: 5
+    },
+    genresText: {
+        fontSize: 25
     }
 });
 
