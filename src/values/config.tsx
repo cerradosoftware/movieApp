@@ -1,2 +1,2 @@
 export const MOVIEDB_APIKEY = '939aa0a9eaf07e10c4ef3861d933f669';
-export const YOUTUBE_KEY = 'AIzaSyB_3CROJ0M8HZa-Pc3Y76AulkYpuROGNHw';
+export const YOUTUBE_KEY = 'AIzaSyAwNmhBI_vGXuwpGQJ2YCW_RdNGr0WwZYA';
