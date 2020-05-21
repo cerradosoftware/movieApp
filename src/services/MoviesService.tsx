@@ -15,6 +15,7 @@ import axios from 'axios';
 import { Movie } from '../types/Movie';
 import { Genre } from '../types/Genre';
 import { Video } from '../types/Video';
+import MoviesRest from './MoviesRest';
 
 class MoviesService {
     static getUpcaming = () => {
@@ -88,10 +89,11 @@ class MoviesService {
      */
     static doRequestToArrayData = (url: string) =>
         new Promise((resolve, reject) => {
-            axios
-                .get(url)
+            MoviesRest.makeRequest(url)
                 .then((response) => {
-                    let data = MoviesService.cleanResult(response.data.results);
+                    let data = MoviesService.cleanResult(
+                        JSON.parse(response).results
+                    );
                     resolve(data.slice(0, 10));
                 })
                 .catch((err) => reject(err.message));

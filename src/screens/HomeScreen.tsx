@@ -48,8 +48,8 @@ export const Home = (props: Props) => {
     return (
         <ScrollView style={styles.root}>
             <BannerList list={trending} title="Lançamentos" />
-            <PosterList list={now} title="Agora" />
-            <PosterList list={popular} title="Popular" />
+            <PosterList list={now} title="Agora" disableLoading />
+            <PosterList list={popular} title="Popular" disableLoading />
         </ScrollView>
     );
 };
